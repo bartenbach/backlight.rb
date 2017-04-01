@@ -19,7 +19,7 @@ $symlinkDir = "/sys/class/backlight/intel_backlight"
 $brightnessDir = File.realpath($symlinkDir)
 
 #
-# returns an integer of the current brightness level
+# RETURNS - Current brightness
 #
 def get_brightness
   if File.directory?($brightnessDir)
@@ -32,27 +32,38 @@ def get_brightness
 end
 
 #
-# increases brightness by passed value
+# SETS - New brightness level
+#   value - INTEGER - value to modify brightness by
+#   increase - BOOLEAN - true to increase, false to decrease
 #
-def increase_brightness(value)
+def set_brightness(value, increase)
   currentBrightness = get_brightness
   maxBrightness = get_max_brightness
-  if (currentBrightness == maxBrightness)
-    puts "Brightness already at maximum"
-    exit
+  brightnessFile = File.join($brightnessDir, "brightness")
+  if !File.writable?(brightnessFile)
+    puts "No write permission to brightness file (are you root?) Aborting"
+    abort
   else
-    brightnessFile = File.join($brightnessDir, "brightness")
-    if !File.writable?(brightnessFile)
-      puts "No write permission to brightness file (are you root?) Aborting"
-      abort
+    handle = File.open(brightnessFile, 'w')
+    if (increase)
+      if (currentBrightness == maxBrightness)
+        puts "Brightness already at maximum"
+        exit
+      else
+        newLevel = currentBrightness.to_i + value
+        handle.puts(newLevel)
+        puts "Brightness increased to #{newLevel}"
+      end
     else
-      newLevel = value + currentBrightness
+      newLevel = currentBrightness.to_i - value
+      handle.puts(newLevel)
+      puts "Brightness decreased to #{newLevel}"
     end
   end
 end
 
 #
-# gets max brightness from file and handles errors
+# RETURNS - Max brightness
 #
 def get_max_brightness
   maxBrightnessFile = File.join($brightnessDir, "max_brightness")
@@ -74,13 +85,13 @@ OptionParser.new do |opts|
 
   opts.on('-i', '--increase [INTEGER]', Integer, "Increase backlight by given integer") do |int| 
     options[:value] = int
-    increase_brightness(options[:value])
+    set_brightness(options[:value], true)
   end
   opts.on('-d', '--decrease [INTEGER]', Integer, "Decrease backlight by given integer") do |int|
     options[:value] = int
+    set_brightness(options[:value], false)
   end
   opts.on('-g', '--get', "Gets the current setting of your backlight") do
     puts "Current brightness level: #{get_brightness}"
   end
 end.parse!
-
