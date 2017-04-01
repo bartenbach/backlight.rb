@@ -4,31 +4,23 @@
 #
 #    because xbacklight doesn't work anymore
 #
+
+# imports
+require 'optparse'
+
+# globals
 $VERSION = "0.0.0.1"
 $symlinkDir = "/sys/class/backlight/intel_backlight"
 $brightnessDir = File.realpath($symlinkDir)
 
-USAGE = <<ENDUSAGE
-Usage:
-   backlight [-inc] [-dec] value
-ENDUSAGE
+# argument parsing
+options = {}
+OptionParser.new do |opt|
+  opt.on('-i', '-increase VALUE') { |o| options[:value] = o }
+  opt.on('-d', '-decrease VALUE') { |o| options[:value] = o }
+end.parse!
 
-HELP = <<ENDHELP
-   -h, --help         Show this help.
-   -inc               Increase brightness by [value]
-   -dec               Decrease brightness by [value]
-ENDHELP
-  
-ARGV.each do |arg|
-  case arg
-    when '-h', '--help'      then ARGS[:help]     = true
-    when '-v','--version'    then ARGS[:version]  = true
-    when '-inc'              then next_arg = :value
-    when '-dec'              then next_arg = :value
-  end
-end
-
-puts "backlight.rb v#{VERSION}" if ARGS[:version]
+puts options
 #
 # returns an integer of the current brightness level
 #
