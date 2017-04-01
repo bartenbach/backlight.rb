@@ -13,14 +13,6 @@ $VERSION = "0.0.0.1"
 $symlinkDir = "/sys/class/backlight/intel_backlight"
 $brightnessDir = File.realpath($symlinkDir)
 
-# argument parsing
-options = {}
-OptionParser.new do |opt|
-  opt.on('-i', '-increase VALUE') { |o| options[:value] = o }
-  opt.on('-d', '-decrease VALUE') { |o| options[:value] = o }
-end.parse!
-
-puts options
 #
 # returns an integer of the current brightness level
 #
@@ -31,4 +23,22 @@ def get_brightness
   end
 end
 
-puts get_brightness
+#
+# argument parsing
+#
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: backlight.rb [options]"
+  opts.version = $VERSION
+
+  opts.on('-i', '--increase [INTEGER]', Integer, "Increase backlight by given integer") do |int| 
+    options[:value] = int
+  end
+  opts.on('-d', '--decrease [INTEGER]', Integer, "Decrease backlight by given integer") do |int|
+    options[:value] = int
+  end
+  opts.on('-g', '--get', "Gets the current setting of your backlight") do
+    puts "Current brightness level: #{get_brightness}"
+  end
+end.parse!
+
