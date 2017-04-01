@@ -51,8 +51,13 @@ def set_brightness(value, increase)
         exit
       else
         newLevel = currentBrightness.to_i + value
-        handle.puts(newLevel)
-        puts "Brightness increased to #{newLevel}"
+        if (newLevel >= maxBrightness.to_i)
+          handle.puts(maxBrightness)
+          puts "Brightness set to max level"
+        else
+          handle.puts(newLevel)
+          puts "Brightness increased to #{newLevel}"
+        end
       end
     else
       newLevel = currentBrightness.to_i - value
