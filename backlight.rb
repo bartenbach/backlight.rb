@@ -53,16 +53,25 @@ def set_brightness(value, increase)
         newLevel = currentBrightness.to_i + value
         if (newLevel >= maxBrightness.to_i)
           handle.puts(maxBrightness)
-          puts "Brightness set to max level"
+          puts "Brightness set to maximum level"
         else
           handle.puts(newLevel)
           puts "Brightness increased to #{newLevel}"
         end
       end
     else
-      newLevel = currentBrightness.to_i - value
-      handle.puts(newLevel)
-      puts "Brightness decreased to #{newLevel}"
+      if (currentBrightness == 0) # I assume zero would be the minimum, yeah?
+        puts "Brightness already at minimum"
+        exit
+      else  
+        newLevel = currentBrightness.to_i - value
+        if (newLevel <= 0)
+          handle.puts(0)
+          puts "Brightness set to minimum level"
+        else
+          handle.puts(newLevel)
+          puts "Brightness decreased to #{newLevel}"
+        end
     end
   end
 end
