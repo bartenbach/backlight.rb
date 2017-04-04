@@ -72,6 +72,7 @@ def set_brightness(value, increase)
           handle.puts(newLevel)
           puts "Brightness decreased to #{newLevel}"
         end
+      end
     end
   end
 end
