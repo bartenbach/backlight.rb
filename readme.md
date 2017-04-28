@@ -20,7 +20,8 @@ can be used by copying to `/usr/lib/systemd/system`
 
 enabled with `systemctl enable backlight.rb.service`
 
-You can change the arguments of the service file to suit your needs
+You can change the arguments of the service file to suit your needs.  The included
+example sets my backlight to max.
 
 ## TODO
 * Potentially safeguard against setting backlight to zero...don't try that.
