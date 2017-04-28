@@ -6,6 +6,15 @@
 
 ![backlight.rb](http://alureon.net/img/backlight.rb.png)
 
+## i want to use this
+You can, but you'll have to change the symlink variable at the top of the script.
+
+`$symlinkDir = "/sys/class/backlight/intel_backlight"`
+
+This is where my backlight is controlled.  Try an `ls` of your `/sys/class/backlight`
+directory.  You will want to try a directory there to utilize this.  Change the
+variable at the top of the script to reflect that path and then try to run it.
+
 ## systemd service file
 can be used by copying to `/usr/lib/systemd/system`
 
