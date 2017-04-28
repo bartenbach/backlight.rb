@@ -1,0 +1,9 @@
+[Unit]
+Description=Set the backlight to a specified level using backlight.rb
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/backlight.rb -i 5000
+
+[Install]
+Alias=multi-user.target.wants/backlight.rb.service
