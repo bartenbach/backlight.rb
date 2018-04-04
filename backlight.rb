@@ -14,7 +14,7 @@ require 'optparse'
 # globals
 #   if you want to use this, you'll likely have to change the symlinkDir
 #
-$VERSION = "0.0.0.1"
+$VERSION = "0.0.0.2"
 $symlinkDir = "/sys/class/backlight/intel_backlight"
 $brightnessDir = File.realpath($symlinkDir)
 
@@ -93,6 +93,7 @@ end
 #
 # argument parsing
 #
+ARGV << '-h' if ARGV.empty?
 options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: backlight.rb [options]"
